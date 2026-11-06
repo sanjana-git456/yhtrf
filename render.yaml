@@ -1,0 +1,23 @@
+databases:
+  - name: yhtrf-api-d95c-db
+    plan: free
+
+services:
+  - type: web
+    name: yhtrf-api-d95c
+    runtime: python
+    rootDir: backend
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: CORS_ORIGINS
+        value: https://sanjana-git456.github.io
+      - key: DATABASE_URL
+        fromDatabase:
+          name: yhtrf-api-d95c-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
